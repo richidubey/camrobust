@@ -1,0 +1,33 @@
+\begin{table}[t]
+\centering
+\caption{Main CamVid results: mean $\pm$ 95\% $t$-interval over three nested-subset seeds (boundary F1: mean only). Bold marks the best value per column within each label budget; rounded ties share the bold. Worst-family mIoU and calibration for the same runs are tabulated in the supplementary.}
+\label{tab:main}
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{clrrrr}
+\toprule
+Labels & Method & Clean & \miouc{} & Held-out & Bnd.\ F1 \\
+\midrule
+\multirow{6}{*}{16} & ERM & 37.5 $\pm$ 4.5 & 33.6 $\pm$ 2.4 & 32.2 $\pm$ 1.0 & 27.2 \\
+ & ColorJitter & 37.7 $\pm$ 4.8 & 33.6 $\pm$ 4.0 & 32.1 $\pm$ 3.0 & 27.8 \\
+ & CameraAug & 37.9 $\pm$ 3.3 & 34.1 $\pm$ 5.5 & 33.6 $\pm$ 5.9 & \textbf{29.9} \\
+ & Paired CameraAug & 38.1 $\pm$ 4.2 & \textbf{34.9} $\pm$ 3.6 & \textbf{34.1} $\pm$ 3.3 & \textbf{29.9} \\
+ & Uniform consistency & \textbf{38.4} $\pm$ 3.6 & \textbf{34.9} $\pm$ 3.7 & \textbf{34.1} $\pm$ 3.7 & 29.5 \\
+ & BaCC & 38.1 $\pm$ 3.7 & 34.7 $\pm$ 2.1 & \textbf{34.1} $\pm$ 2.8 & 29.6 \\
+\midrule
+\multirow{6}{*}{32} & ERM & 41.7 $\pm$ 1.2 & 37.3 $\pm$ 2.3 & 35.5 $\pm$ 3.0 & 29.5 \\
+ & ColorJitter & 41.8 $\pm$ 3.8 & 37.3 $\pm$ 3.7 & 35.6 $\pm$ 4.5 & 30.6 \\
+ & CameraAug & 41.8 $\pm$ 0.5 & 37.7 $\pm$ 1.8 & 37.2 $\pm$ 1.6 & 32.0 \\
+ & Paired CameraAug & \textbf{42.9} $\pm$ 1.1 & \textbf{38.8} $\pm$ 0.5 & \textbf{37.9} $\pm$ 1.2 & 32.3 \\
+ & Uniform consistency & 42.6 $\pm$ 1.5 & 38.7 $\pm$ 1.0 & \textbf{37.9} $\pm$ 1.4 & 32.0 \\
+ & BaCC & 42.8 $\pm$ 1.8 & 38.7 $\pm$ 1.8 & \textbf{37.9} $\pm$ 2.0 & \textbf{32.7} \\
+\midrule
+\multirow{6}{*}{64} & ERM & 46.4 $\pm$ 3.4 & 41.0 $\pm$ 2.9 & 38.7 $\pm$ 3.1 & 32.6 \\
+ & ColorJitter & 46.1 $\pm$ 5.2 & 41.0 $\pm$ 3.6 & 38.8 $\pm$ 3.5 & 32.5 \\
+ & CameraAug & \textbf{46.8} $\pm$ 1.6 & 42.1 $\pm$ 3.2 & \textbf{41.6} $\pm$ 3.3 & 34.4 \\
+ & Paired CameraAug & 46.5 $\pm$ 2.8 & 42.1 $\pm$ 2.8 & 41.0 $\pm$ 2.6 & \textbf{34.6} \\
+ & Uniform consistency & 46.7 $\pm$ 2.6 & \textbf{42.4} $\pm$ 2.6 & 41.4 $\pm$ 2.4 & 34.4 \\
+ & BaCC & 46.6 $\pm$ 2.4 & \textbf{42.4} $\pm$ 2.4 & 41.4 $\pm$ 2.3 & 34.4 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\caption{Boundary-weight ablation and architecture check at 32 labels. Mean over three seeds.}
+\label{tab:ablation}
+\small
+\begin{tabular}{llrrr}
+\toprule Architecture & Setting & Clean & \miouc{} & Boundary F1 \\
+\midrule
+DeepLabV3 & $\alpha=0$ (uniform) & 42.6 & 38.7 & 32.0 \\
+DeepLabV3 & $\alpha=1$ & 42.5 & 38.6 & 32.3 \\
+DeepLabV3 & $\alpha=3$ & 42.8 & 38.7 & 32.7 \\
+DeepLabV3 & $\alpha=6$ & 42.7 & 38.9 & 32.2 \\
+\midrule
+LR-ASPP & ERM & 44.3 & 36.1 & 42.1 \\
+LR-ASPP & BaCC & 44.8 & 38.6 & 43.3 \\
+\bottomrule
+\end{tabular}
+\end{table}

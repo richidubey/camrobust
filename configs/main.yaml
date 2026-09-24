@@ -1,0 +1,43 @@
+study: camrobust-main-v1
+frozen_at: 2026-08-21T20:36:00-07:00
+target: SmallData-CV@ACCV-2026
+dataset:
+  name: CamVid
+  split: SegNet-standard
+  classes: 11
+  ignore_index: 11
+  train_images: 367
+  val_images: 101
+  test_images: 233
+  label_budgets: [16, 32, 64]
+  subset_seeds: [0, 1, 2]
+  nested_subsets: true
+  image_size: [288, 384]
+model:
+  primary: deeplabv3_mobilenet_v3_large
+  secondary: lraspp_mobilenet_v3_large
+  pretraining: ImageNet MobileNetV3 backbone
+optimization:
+  updates: 400
+  validation_interval: 100
+  batch_size: 8
+  optimizer: AdamW
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  schedule: polynomial-0.9
+  gradient_clip_norm: 5.0
+methods: [erm, colorjitter, cameraaug, pair, consistency, bacc]
+bacc:
+  consistency_weight: 1.0
+  boundary_alpha: 3.0
+  boundary_radius: 2
+ablation_alphas: [0.0, 1.0, 3.0, 6.0]
+metrics:
+  - clean_miou
+  - corruption_miou
+  - heldout_corruption_miou
+  - worst_corruption_miou
+  - relative_corruption_degradation
+  - boundary_f1_tolerance_2px
+  - ece_15_bins
+

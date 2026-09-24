@@ -1,0 +1,15 @@
+.venv/
+data/
+artifacts/
+tools/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.brf
+paper/*.log
+paper/*.out
+paper/*.pdf

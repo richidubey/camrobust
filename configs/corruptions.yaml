@@ -1,0 +1,21 @@
+training:
+  sampling: one-per-batch
+  severity: continuous-uniform
+  families:
+    - exposure
+    - white_balance
+    - gaussian_noise
+    - defocus_blur
+evaluation:
+  severities: [1, 2, 3]
+  seen_or_related:
+    - brightness
+    - darkness
+    - white_balance
+    - gaussian_noise
+    - defocus_blur
+  held_out:
+    - shot_noise
+    - motion_blur
+    - jpeg
+  deterministic_seed: sha256-condition-severity-subset_seed

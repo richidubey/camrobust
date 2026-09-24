@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this benchmark or method, please cite the accompanying ACCV 2026 workshop paper."
+title: "Supervising Both Views: Camera Robustness under Label Scarcity"
+type: software
+version: 0.1.0
+date-released: 2026-08-21
+authors:
+  - family-names: "Anonymous"
+    given-names: "Authors"
+license: MIT

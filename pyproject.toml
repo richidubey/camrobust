@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "camrobust"
+version = "0.1.0"
+description = "Reproducible low-label camera-corruption robustness study for semantic segmentation"
+requires-python = ">=3.12"
+dependencies = [
+  "torch>=2.13",
+  "torchvision>=0.28",
+  "numpy>=2.5",
+  "pillow>=12",
+  "scipy>=1.18",
+  "pandas>=3",
+  "matplotlib>=3.11",
+  "pyyaml>=6",
+  "tqdm>=4.70",
+]
+
+[project.scripts]
+camrobust-train = "camrobust.train:main"
+camrobust-grid = "camrobust.experiment:main"
+camrobust-analyze = "camrobust.analyze:main"
+camrobust-paper-figures = "camrobust.paper_figures:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

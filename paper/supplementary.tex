@@ -1,0 +1,143 @@
+\documentclass[runningheads]{llncs}
+\usepackage[review,year=2026,ID=11]{accv}
+\usepackage{accvabbrv}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[pagebackref,breaklinks,colorlinks,citecolor=accvblue]{hyperref}
+\hypersetup{pdftitle={Supplementary Material: Supervising Both Views: Camera Robustness under Label Scarcity}}
+\usepackage[capitalize,noabbrev]{cleveref}
+\setlength{\emergencystretch}{1em}
+\newcommand{\miouc}{mIoU-C}
+
+\begin{document}
+\title{Supplementary Material:\\Supervising Both Views: Camera Robustness under Label Scarcity}
+\author{Anonymous ACCV Workshop Submission}
+\institute{Anonymous Institution}
+\maketitle
+
+\section{Reproducibility Details}
+
+All experiments ran with PyTorch 2.13.0 and CUDA 13.0 on a single GPU with
+24 GB of memory. Automatic mixed precision used
+bfloat16 for model operations; losses and metrics were accumulated in float32
+or float64. Random seeds initialize Python, NumPy, PyTorch, CUDA, the replacement
+sampler, and deterministic corruption generators. Each configuration records the exact
+labeled indices, class weights, package version, device name, training history,
+validation scores, full confusion matrices, and every test condition in JSON.
+
+Optimization uses AdamW with learning rate $3\times10^{-4}$, weight decay
+$10^{-4}$, polynomial decay with power 0.9, and gradient clipping at norm 5,
+validating every 100 updates. Every method receives the same sampled batches,
+update count, pretrained initialization, checkpoint rule, and class weights.
+ECE uses 15 equal-width confidence bins. Table values are rounded to one
+decimal while deltas quoted in the main text are computed from full-precision
+records, so the two can differ by 0.1.
+
+Each budget resamples its labeled subset with replacement over the 400 updates.
+The subsets are nested, so the 64-frame budget contains the 32-frame budget,
+which contains the 16-frame budget. Only label-preserving corruptions are used:
+every transformation alters pixel values but leaves geometry untouched, so the
+mask stays valid for the corrupted view. Geometric corruptions such as
+rolling-shutter skew would require warping the label and are outside this
+protocol. Paired supervision and the two consistency variants compute two
+forward passes per update, against one for ERM, ColorJitter, and CameraAug; we
+hold the number of updates fixed rather than the compute, so part of their
+advantage may follow from the larger effective batch.
+
+The dataset loader reads the standard CamVid train/validation/test folders from
+the public SegNet tutorial. RGB images and integer masks are resized to
+$288\times384$ using bilinear and nearest-neighbor interpolation, respectively.
+Class 11 is ignored. Inverse-square-root class weights are calculated only from
+the chosen labeled subset, normalized to mean one, and clipped to $[0.35,3]$.
+
+\section{Corruption Definitions}
+
+Training samples one spatially aligned transform per batch: continuous
+exposure/gamma change, channel-wise red/blue gain for white balance, additive
+Gaussian noise, or Gaussian defocus blur. Evaluation fixes three severities for
+eight families. Brightness is multiplicative; darkness combines gamma and gain;
+white balance adjusts opposing red/blue gains; Gaussian and signal-dependent
+shot noise model sensor degradation; defocus uses isotropic Gaussian kernels;
+motion blur uses horizontal or vertical box kernels; and JPEG performs real
+libjpeg encoding and decoding with severity-dependent quality and chroma
+subsampling. Evaluation noise is seeded by condition and subset seed.
+
+\section{Boundary Metric}
+
+A semantic transition occurs wherever horizontally or vertically adjacent
+valid pixels have different labels. For boundary F1, predicted and target
+transition maps receive a two-pixel matching tolerance through max pooling.
+Precision is the fraction of predicted boundary pixels within the target
+neighborhood; recall is defined symmetrically. This class-agnostic transition
+metric rewards localization but can count a nearby boundary of the wrong class
+as a match, so per-class IoU remains the primary semantic metric.
+
+\section{Complete Results and Qualitative Examples}
+
+The code release contains aggregate CSV summaries, every per-run JSON record,
+and the fixed split indices.
+
+\Cref{tab:main-full} extends the main-paper table with the two aggregate
+columns omitted there: the worst single corruption-family mIoU and 15-bin
+expected calibration error under corruption.
+
+\IfFileExists{../results/aggregate/table_main_full.tex}{
+\input{../results/aggregate/table_main_full.tex}
+}{}
+
+\Cref{tab:sequences} breaks clean test mIoU down by source video sequence at
+32 labels. BaCC leads in both sequences, while CameraAug falls behind
+ERM on Seq05VD.
+
+\IfFileExists{../results/aggregate/table_sequences.tex}{
+\input{../results/aggregate/table_sequences.tex}
+}{}
+
+\Cref{tab:corruptions} breaks the aggregate \miouc{} down by corruption
+family.
+
+\IfFileExists{../results/aggregate/table_corruptions.tex}{
+\input{../results/aggregate/table_corruptions.tex}
+}{}
+
+\Cref{tab:ablation} sweeps the boundary weight $\alpha$ referenced in the main
+paper's ablation discussion.
+
+\IfFileExists{../results/aggregate/table_ablation.tex}{
+\input{../results/aggregate/table_ablation.tex}
+}{}
+
+\Cref{tab:obstacle-classes} reports per-class IoU for the road-scene obstacle
+categories most relevant to safety (pedestrians, bicyclists, signs, and cars).
+
+\IfFileExists{../results/aggregate/table_obstacle_classes.tex}{
+\input{../results/aggregate/table_obstacle_classes.tex}
+}{}
+
+Thin and rare classes remain difficult: even the best 32-label result is below
+14 IoU for pedestrians and below 8 for signs. Paired camera supervision still more than
+doubles sign IoU over ERM (7.9 versus 3.8) and lifts pedestrian IoU from 11.3
+to 13.8. BaCC gives the highest car and bicyclist averages, while Paired
+leads on pedestrians and signs.
+
+\IfFileExists{../results/aggregate/qualitative.pdf}{
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{../results/aggregate/qualitative.pdf}
+\caption{Representative held-out motion-blur examples at severity 3. Images
+were selected by fixed test indices before viewing predictions.}
+\end{figure}
+}{Qualitative figures are generated by `python -m camrobust.visualize` from the
+saved representative ERM and BaCC checkpoints.}
+
+\section{Compute Cost}
+
+The main grid uses a compact MobileNetV3 backbone and 400 updates per run. The 66 records sum to 1.12
+run-hours; executing three interleaved shards took approximately 0.37 hours of
+wall time on the single GPU. GPU identity and per-run time are stored in every
+record. These measurements exclude setup, pilot experiments, and the two
+checkpoint reruns used only for qualitative visualization.
+
+\end{document}

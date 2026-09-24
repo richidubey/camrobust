@@ -1,0 +1,4 @@
+condition,severity,test_index,image_name,paired_minus_erm_per_image_miou
+shot_noise,3,64,Seq05VD_f00060.png,0.0663193948949864
+motion_blur,3,2,0001TP_008610.png,0.034898298516625514
+darkness,3,136,Seq05VD_f02220.png,-0.01767695617402476

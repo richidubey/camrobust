@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+\caption{Per-corruption mIoU at 32 labels, averaged over three severities and three seeds. Shot noise, motion blur, and JPEG are absent from training.}
+\label{tab:corruptions}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Method & Bright. & Dark & Defocus & Gauss. & JPEG & Motion & Shot & W. bal. \\
+\midrule
+ERM & 41.1 & 38.0 & 38.0 & 34.0 & 38.6 & 37.0 & 30.9 & 41.1 \\ 
+CameraAug & 41.5 & 33.0 & 37.4 & 37.0 & 39.0 & 37.2 & 35.3 & 41.4 \\ 
+Uniform & 42.1 & 35.6 & 38.6 & 37.2 & 39.8 & 38.5 & 35.3 & 42.1 \\ 
+BaCC & 42.2 & 35.9 & 38.5 & 37.2 & 40.0 & 38.5 & 35.1 & 42.2 \\ 
+\bottomrule
+\end{tabular}
+\end{table*}
